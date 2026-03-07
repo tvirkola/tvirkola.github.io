@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tuomo Virkola</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #3a6b47;
+      --green-light: #f2f7f4;
+      --green-border: #c8ddd0;
+      --accent: #3a6b47;
+      --border: #e4e8e6;
+      --text: #1e1e1e;
+      --muted: #5c6b62;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      background: #fff;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Top nav ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .header-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    nav {
+      display: flex;
+      gap: 28px;
+    }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+      transition: color 0.15s;
+    }
+    nav a:hover { color: var(--green); text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 56px 32px 48px;
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .hero-photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--green-light);
+      border: 2px solid var(--green-border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: var(--green);
+    }
+    /* To use a real photo, replace .hero-photo div with:
+       <img src="photo.jpg" class="hero-photo" style="object-fit:cover;" alt="Tuomo Virkola"> */
+
+    .hero-text h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .hero-text .position {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .hero-text .position a {
+      color: var(--muted);
+    }
+    .hero-text .position a:hover { color: var(--green); }
+
+    .hero-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+      font-size: 13.5px;
+    }
+
+    .hero-links a { color: var(--green); font-weight: 500; }
+
+    .cv-btn {
+      padding: 5px 14px;
+      background: var(--green);
+      color: #fff !important;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .cv-btn:hover { background: #2e5439; text-decoration: none !important; }
+
+    /* ── Main content ── */
+    .content {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    section { margin-bottom: 52px; scroll-margin-top: 72px; }
+
+    section h2 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      border-bottom: 1px solid var(--green-border);
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
+
+    /* About */
+    #about p {
+      font-size: 15.5px;
+      line-height: 1.78;
+      color: #333;
+      max-width: 660px;
+    }
+    #about p + p { margin-top: 12px; }
+
+    /* Papers */
+    .paper { margin-bottom: 28px; }
+
+    .paper-title {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .paper-meta {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-top: 3px;
+      line-height: 1.5;
+    }
+
+    .paper-meta .journal { font-style: italic; }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-left: 8px;
+      vertical-align: middle;
+      letter-spacing: 0.02em;
+      background: #e6f0e8;
+      color: #2e5c32;
+      border: 1px solid #b8d4bc;
+    }
+
+    .paper-links {
+      margin-top: 5px;
+      font-size: 12.5px;
+    }
+    .paper-links a {
+      margin-right: 10px;
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    /* Policy */
+    .policy-item { margin-bottom: 20px; }
+    .policy-title { font-size: 14.5px; font-weight: 500; line-height: 1.4; }
+    .policy-meta { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+    /* Responsive */
+    @media (max-width: 620px) {
+      .hero { flex-direction: column; gap: 20px; padding: 36px 20px 32px; }
+      .content { padding: 0 20px 60px; }
+      .header-inner { padding: 0 20px; }
+      nav { gap: 16px; }
+      nav a { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Top nav ── -->
+  <header>
+    <div class="header-inner">
+      <span class="header-name">Tuomo Virkola</span>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#working-papers">Working Papers</a>
+        <a href="#wip">Work in Progress</a>
+        <a href="#publications">Publications</a>
+        <a href="#policy">Policy</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Hero / identity block ── -->
+  <div class="hero">
+    <div class="hero-photo">TV</div>
+    <!-- Replace with photo: <img src="photo.jpg" class="hero-photo" style="object-fit:cover;border-radius:50%;" alt="Tuomo Virkola"> -->
+
+    <div class="hero-text">
+      <h1>Tuomo Virkola</h1>
+      <div class="position">
+        Academy Research Fellow, <a href="https://vatt.fi/en/">VATT Institute for Economic Research</a><br>
+        Affiliate: <a href="https://www.helsinkigse.fi/">Helsinki GSE</a> · RFBerlin · FIT<br>
+        PhD, <a href="https://www.eui.eu/">European University Institute</a>, 2021
+      </div>
+      <div class="hero-links">
+        <a href="mailto:tuomo.virkola@vatt.fi">tuomo.virkola@vatt.fi</a>
+        <a href="CV_Virkola.pdf" class="cv-btn">CV</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Content ── -->
+  <div class="content">
+
+    <!-- About -->
+    <section id="about">
+      <h2>About</h2>
+      <p>
+        I'm an Academy Research Fellow at <a href="https://vatt.fi/en/">VATT Institute for Economic Research</a>
+        and an affiliate at the <a href="https://www.helsinkigse.fi/">Helsinki GSE</a>, RFBerlin and FIT.
+        I defended my PhD at the <a href="https://www.eui.eu/">European University Institute</a> in 2021.
+      </p>
+      <p>
+        My work focuses on applied labor economics, migration, public economics, education and economic history.
+      </p>
+      <p>
+        I'm visiting at <a href="https://www.upf.edu/">Universitat Pompeu Fabra</a> in the Fall 2025.
+      </p>
+    </section>
+
+    <!-- Working Papers -->
+    <section id="working-papers">
+      <h2>Working Papers</h2>
+
+      <div class="paper">
+        <div class="paper-title">College Admissions Criteria, Students' Academic Performance and Social Mobility</div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">Randomization as an Incentive Device: Evidence from Public Procurement of Immigrant Integration Services</div>
+        <div class="paper-meta">with Hanna Pesola and Matti Sarvimäki</div>
+        <div class="paper-links"><a href="#">AEA RCT Registry</a></div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">Pay Transparency, Wage Setting and Worker Sorting</div>
+        <div class="paper-meta">with Aspasia Bizopoulou and Elias Einiö</div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">
+          Equity and Efficiency in Anti-Discrimination Policy: Evidence from an Anonymous Hiring Pilot
+          <span class="badge">R&amp;R, Review of Economics and Statistics</span>
+        </div>
+        <div class="paper-meta">with Ohto Kanninen and Sanni Kiviholma</div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">(Not) Anticipating Predictable Inheritances</div>
+        <div class="paper-meta">with Erkki Vihriälä</div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">Internships and the Allocation of Talent</div>
+      </div>
+    </section>
+
+    <!-- Work in Progress -->
+    <section id="wip">
+      <h2>Selected Work in Progress</h2>
+
+      <div class="paper">
+        <div class="paper-title">Waiting Times and Refugee Integration</div>
+        <div class="paper-meta">with Miko Lepistö and Hanna Pesola</div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">Worker Mobility Restrictions</div>
+        <div class="paper-meta">with Omar Bamieh and Hanna Pesola</div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">Social Sorting, Family Formation and Inequality</div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">The Impact of Foreign Acquisitions on Wages and Compensation</div>
+        <div class="paper-meta">with David Autor, Tuomas Kosonen, Matti Sarvimäki and Lauri Turkia</div>
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section id="publications">
+      <h2>Publications</h2>
+
+      <div class="paper">
+        <div class="paper-title">Paths to Integration: Earnings, Skill Investments, and Outmigration Across Immigrant Admission Categories</div>
+        <div class="paper-meta">
+          with Hanna Pesola and Matti Sarvimäki<br>
+          <span class="journal">The Scandinavian Journal of Economics</span>, 2025, 127(4), 742–764
+        </div>
+        <div class="paper-links">
+          <a href="#">Working paper</a>
+          <a href="#">IZA DP</a>
+        </div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">Famine, Inequality and Conflict</div>
+        <div class="paper-meta">
+          with Jaakko Meriläinen and Matti Mitrunen<br>
+          <span class="journal">Journal of the European Economic Association</span>, 2023, 21(4), 1478–1509
+        </div>
+        <div class="paper-links"><a href="#">Working paper</a></div>
+      </div>
+
+      <div class="paper">
+        <div class="paper-title">Pricing, Signalling and Sorting with Frictions</div>
+        <div class="paper-meta">
+          with Mats Godenhielm and Klaus Kultti<br>
+          <span class="journal">The B.E. Journal of Theoretical Economics</span>, 2019, 20(1), 1–28
+        </div>
+        <div class="paper-links"><a href="#">Working paper</a></div>
+      </div>
+    </section>
+
+    <!-- Book Chapters -->
+    <section id="book-chapters">
+      <h2>Book Chapters</h2>
+
+      <div class="paper">
+        <div class="paper-title">Conflict and Inequality: A Survey and Empirical Applications to Finland</div>
+        <div class="paper-meta">
+          with Jaakko Meriläinen and Matti Mitrunen<br>
+          in <span class="journal">The Routledge Economic History of War</span>, 2025, pp. 405–424
+        </div>
+      </div>
+    </section>
+
+    <!-- Policy Work -->
+    <section id="policy">
+      <h2>Policy Work</h2>
+
+      <div class="policy-item">
+        <div class="policy-title">Mitä oikeastaan tiedämme maahanmuuttajien kotoutumispolitiikan vaikuttavuudesta?</div>
+        <div class="policy-meta">with Hanna Pesola and Matti Sarvimäki · <em>Talous &amp; Yhteiskunta</em> 4/2024</div>
+      </div>
+
+      <div class="policy-item">
+        <div class="policy-title">Koto-SIB -kokeilun vaikutukset ja käytännön toteutus</div>
+        <div class="policy-meta">
+          with Risto Karinen, Nella Koivula, Tiina Koivula, Olli Oosi, Hanna Pesola and Matti Sarvimäki ·
+          <em>Publications of the Ministry of Economic Affairs and Employment</em> 2024:33<br>
+          English: <em>Impacts and practical implementation of the Koto-SIB experiment</em>
+        </div>
+      </div>
+
+      <div class="policy-item">
+        <div class="policy-title">Eri syistä maahan muuttaneiden työllistyminen Suomessa</div>
+        <div class="policy-meta">with Hanna Pesola and Matti Sarvimäki · <em>Publications of the Ministry of Economic Affairs and Employment</em> 2024:9</div>
+      </div>
+
+      <div class="policy-item">
+        <div class="policy-title">Todistusvalintahankkeen loppuraportti</div>
+        <div class="policy-meta">with Mila Hakanen, Aino Kalmbach, Tiina Kuuppelomäki, Tina Lauronen and Tuomo Suhonen · <em>VATT Mimeo 70</em></div>
+      </div>
+
+      <div class="policy-item">
+        <div class="policy-title">Opiskelijavalintauudistuksen seurantatutkimuksen loppuraportti</div>
+        <div class="policy-meta">with Hannu Karhunen, Tuomas Pekkarinen, Tuomo Suhonen · <em>VATT Mimeo 76</em></div>
+      </div>
+
+      <div class="policy-item">
+        <div class="policy-title">Tavoitteena syrjimätön työelämä: Työsyrjinnän nykytila ja keinoja tasa-arvon ja yhdenvertaisuuden edistämiseksi</div>
+        <div class="policy-meta">with Ohto Kanninen, Eero Lilja and Shadia Rask · <em>Publications of the Government's analysis, assessment and research activities</em> 2022:20</div>
+      </div>
+
+      <div class="policy-item">
+        <div class="policy-title">Rekrytointisyrjintä ja sen vastaiset keinot</div>
+        <div class="policy-meta">with Ohto Kanninen · <em>Publications of the Government's analysis, assessment and research activities</em> 2021:27</div>
+      </div>
+
+      <div class="policy-item">
+        <div class="policy-title">Mitä voimme odottaa opiskelijavalinnan uudistukselta</div>
+        <div class="policy-meta">with Hannu Karhunen, Tuomas Pekkarinen, Tuomo Suhonen · <em>Talous &amp; Yhteiskunta</em> 4/2020</div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
