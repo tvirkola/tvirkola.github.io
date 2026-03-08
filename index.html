@@ -29,11 +29,474 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --blue: #1a56a0; --blue-light: #dce8f5; --text: #1a1a1a;
+      --blue: #1e6b45; --blue-light: #d4ead9; --text: #1a1a1a;
       --muted: #6b7280; --border: #e5e7eb;
     }
     body { font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.7; color: var(--text); background: #fff; }
     a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header { background: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); transition: box-shadow 0.2s; }
+    header.scrolled { box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+    .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: center; gap: 32px; height: 52px; }
+    .header-name { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); letter-spacing: 0.01em; white-space: nowrap; }
+    nav { display: flex; gap: 18px; }
+    nav a { font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: 0.02em; text-transform: uppercase; transition: color 0.15s; white-space: nowrap; }
+    nav a:hover { color: var(--text); text-decoration: none; }
+    nav a.active { color: var(--text); font-weight: 600; }
+    nav a.nav-cv { color: var(--blue); }
+    nav a.nav-cv:hover { color: var(--text); }
+    .layout { max-width: 1100px; margin: 0 auto; display: flex; gap: 32px; padding: 0 40px; align-items: flex-start; }
+    .sidebar { width: 260px; flex-shrink: 0; position: sticky; top: 52px; padding: 48px 0 60px; padding-right: 24px; }
+    .main-content { flex: 1; min-width: 0; padding-bottom: 80px; }
+    .sidebar-photo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; object-position: center 10%; border: 3px solid var(--blue-light); box-shadow: 0 2px 12px rgba(30,107,69,0.10); display: block; margin-bottom: 20px; }
+    .sidebar h1 { font-family: 'EB Garamond', serif; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin-bottom: 16px; line-height: 1.25; }
+    .sidebar .position { font-size: 13px; color: var(--text); line-height: 1.65; margin-bottom: 14px; }
+    .sidebar .position a { color: var(--blue); font-weight: 600; }
+    .sidebar-about { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 18px; }
+    .sidebar-about p + p { margin-top: 8px; }
+    .sidebar-links { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .sidebar-links .email { font-size: 13px; color: var(--text); font-weight: 400; }
+    .sidebar-btn { display: inline-block; padding: 4px 12px; background: transparent; color: var(--muted) !important; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; font-weight: 500; letter-spacing: 0.02em; transition: color 0.15s, border-color 0.15s, background 0.15s; text-decoration: none !important; }
+    .sidebar-btn:hover { color: var(--text) !important; border-color: #aaa; }
+    /* Row of icon-style buttons */
+    .sidebar-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .sidebar-btn-icon { width: 30px; height: 26px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+    .sidebar-btn-icon svg { width: 14px; height: 14px; }
+    .about-intro { padding-top: 28px; font-size: 15px; line-height: 1.8; color: #333; }
+    .section-subheading { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 20px; margin-bottom: 4px; }
+    .lang-note { font-style: normal; font-weight: 400; color: var(--muted); opacity: 0.7; }
+    .about-intro p + p { margin-top: 10px; }
+    section { padding-top: 36px; scroll-margin-top: 68px; }
+    section h2 { font-family: 'EB Garamond', serif; font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 14px; padding-left: 10px; border-left: 3px solid var(--blue); }
+    .paper { padding: 10px 0; }
+    .paper:first-child { padding-top: 4px; }
+    .paper-title { font-weight: 600; font-size: 14.5px; color: var(--text); line-height: 1.45; }
+    .paper-meta { font-size: 13.5px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+    .paper-meta a { color: var(--muted); text-decoration: underline; text-decoration-color: #ccc; text-underline-offset: 2px; }
+    .paper-meta a:hover { color: var(--text); text-decoration-color: #888; }
+    .paper-meta .journal { font-style: italic; font-weight: 600; color: var(--text); }
+    .paper-title-link { color: var(--text); text-decoration: underline; text-decoration-color: #bbb; text-underline-offset: 2px; }
+    .paper-title-link:hover { color: var(--blue); text-decoration-color: var(--blue); }
+    .paper-inline-links { font-weight: 400; font-size: 13px; color: var(--muted); }
+    .paper-inline-links a { color: var(--muted); text-decoration: none; }
+    .paper-inline-links a:hover { color: var(--blue); text-decoration: underline; }
+    .policy-item { padding: 10px 0; }
+    .policy-item:first-child { padding-top: 4px; }
+    .policy-title { font-size: 14.5px; font-weight: 600; line-height: 1.45; }
+    .policy-meta { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+    /* News section */
+    .news-list { list-style: none; padding: 0; }
+    .news-list li { display: flex; gap: 16px; padding: 6px 0; font-size: 13.5px; line-height: 1.5; }
+    .news-list li .news-year { color: var(--muted); font-weight: 500; white-space: nowrap; min-width: 38px; }
+    @media (max-width: 700px) {
+      .layout { flex-direction: column; padding: 0 20px; gap: 0; }
+      .sidebar { position: static; width: 100%; padding: 28px 0 24px; border-right: none; border-bottom: 1px solid var(--border); }
+      .sidebar-photo { width: 100px; height: 100px; }
+      .sidebar h1 { font-size: 24px; }
+      /* Let the header grow to fit wrapped nav */
+      header { position: sticky; top: 0; }
+      .header-inner { height: auto; padding: 10px 20px; flex-direction: column; gap: 0; }
+      nav { flex-wrap: wrap; justify-content: center; gap: 6px 14px; padding: 4px 0; }
+      nav a { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+<script>
+// ============================================================
+//  EDIT YOUR CONTENT HERE
+//  To add a paper, copy one entry and fill in your details.
+//  Leave any field blank ("") if it doesn't apply.
+// ============================================================
+
+const PROFILE = {
+  name:  "Tuomo Virkola",
+  photo: "VATTstaff151_1.jpeg",
+  email: "tuomo.virkola@vatt.fi",
+  cv:    "cv_virkola.pdf",
+  // Fill in your Google Scholar and   URLs, or leave blank ("") to hide
+  scholar: "https://scholar.google.com/citations?user=8dAoS2IAAAAJ&hl=en",
+  orcid:   "https://orcid.org/0009-0000-0992-796X",
+  // Each string below becomes one line in the position block. HTML is allowed.
+  position: [
+    'Academy Research Fellow, <strong>VATT Institute for Economic Research</strong>',
+    'Affiliate: <strong>Helsinki GSE · RFBerlin · FIT</strong>',
+    'PhD, <strong>European University Institute</strong>, 2021'
+  ]
+};
+
+// Each string becomes a paragraph. Add more strings for more paragraphs.
+const ABOUT = [
+  "I'm an applied economist studying labor markets and public policy. My current projects focus on immigration policy, anti-discrimination policy, and college admissions.",
+];
+
+// News items — most recent first. Leave array empty ([]) to hide the section.
+const NEWS = [
+  // Example entries — edit or remove as needed:
+  // { year: "2026", text: "New working paper posted: College Admissions Criteria, Students' Academic Performance and Social Mobility" },
+  // { year: "2025", text: 'Paper accepted at <em>The Scandinavian Journal of Economics</em>' },
+];
+
+const WORKING_PAPERS = [
+  {
+    title: "College Admissions Criteria, Students' Academic Performance and Social Mobility",
+    coauthors: "",
+    badge: "",        // e.g. "R&R, Journal of Finance"
+    links: [["SSRN", "https://ssrn.com/abstract=5756322"]]
+  },
+  {
+    title: "Randomization as an Incentive Device: Evidence from Public Procurement of Immigrant Integration Services",
+    coauthors: 'with <a href="https://sites.google.com/view/hannapesola">Hanna Pesola</a> and <a href="https://hse-econ.fi/sarvimaki/">Matti Sarvimäki</a>',
+    badge: "",
+    links: [["SSRN", "https://ssrn.com/abstract=5086705"], ["AEA RCT Registry", "https://www.socialscienceregistry.org/trials/12519"]]
+  },
+  {
+    title: "Pay Transparency, Wage Setting and Worker Sorting",
+    coauthors: 'with <a href="https://sites.google.com/site/aspasiabizopoulou/home">Aspasia Bizopoulou</a> and <a href="https://sites.google.com/view/eliaseinio">Elias Einiö</a>',
+    badge: "",
+    links: [["SSRN", "https://ssrn.com/abstract=5062899"]]
+  },
+  {
+    title: "Equity and Efficiency in Anti-Discrimination Policy: Evidence from an Anonymous Hiring Pilot",
+    coauthors: 'with <a href="https://labore.fi/en/author/ohto-kanninen/">Ohto Kanninen</a> and <a href="https://www.sannikiviholma.com/">Sanni Kiviholma</a>',
+    badge: "R&R, Review of Economics and Statistics",
+    links: [["SSRN", "https://ssrn.com/abstract=4567818"]]
+  },
+  {
+    title: "(Not) Anticipating Predictable Inheritances",
+    coauthors: 'with <a href="https://vihriala.rbind.io/">Erkki Vihriälä</a>',
+    badge: "",
+    links: [["SSRN", "https://ssrn.com/abstract=4607918"]]
+  },
+  {
+    title: "Internships and the Allocation of Talent",
+    coauthors: "",
+    badge: "",
+    links: [["SSRN", "https://ssrn.com/abstract=4881435"]]
+  }
+];
+
+const WORK_IN_PROGRESS = [
+  {
+    title: "Waiting Times and Refugee Integration",
+    coauthors: 'with Miko Lepistö and <a href="https://sites.google.com/view/hannapesola">Hanna Pesola</a>',
+    badge: "",
+    links: []
+  },
+  {
+    title: "Worker Mobility Restrictions",
+    coauthors: 'with <a href="https://sites.google.com/view/omar-bamieh">Omar Bamieh</a> and <a href="https://sites.google.com/view/hannapesola">Hanna Pesola</a>',
+    badge: "",
+    links: []
+  },
+  {
+    title: "Social Sorting, Family Formation and Inequality",
+    coauthors: "",
+    badge: "",
+    links: []
+  },
+  {
+    title: "The Impact of Foreign Acquisitions on Wages and Compensation",
+    coauthors: 'with <a href="https://economics.mit.edu/people/faculty/david-autor">David Autor</a>, <a href="https://sites.google.com/view/tuomaskosonen/home">Tuomas Kosonen</a>, <a href="https://hse-econ.fi/sarvimaki/">Matti Sarvimäki</a> and Lauri Turkia',
+    badge: "",
+    links: []
+  }
+];
+
+const PUBLICATIONS = [
+  {
+    title: "Paths to Integration: Earnings, Skill Investments, and Outmigration Across Immigrant Admission Categories",
+    coauthors: 'with <a href="https://sites.google.com/view/hannapesola">Hanna Pesola</a> and <a href="https://hse-econ.fi/sarvimaki/">Matti Sarvimäki</a>',
+    journal: "The Scandinavian Journal of Economics",
+    year: "2025", volume: "127(4)", pages: "742–764",
+    links: [["Journal", "https://doi.org/10.1111/sjoe.70000"], ["SSRN", "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4825789"], ["IZA DP", "https://www.iza.org/publications/dp/18012"]]
+  },
+  {
+    title: "Famine, Inequality and Conflict",
+    coauthors: 'with <a href="https://sites.google.com/view/jaakkomerilainen/main">Jaakko Meriläinen</a> and <a href="https://sites.google.com/site/mattimitrunen/">Matti Mitrunen</a>',
+    journal: "Journal of the European Economic Association",
+    year: "2023", volume: "21(4)", pages: "1478–1509",
+    links: [["Journal", "https://academic.oup.com/jeea/article-abstract/21/4/1478/6847167"], ["SSRN", "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3741493"]]
+  },
+  {
+    title: "Pricing, Signalling and Sorting with Frictions",
+    coauthors: 'with <a href="https://sites.google.com/site/matsgodenhielm/home">Mats Godenhielm</a> and Klaus Kultti',
+    journal: "The B.E. Journal of Theoretical Economics",
+    year: "2019", volume: "20(1)", pages: "1–28",
+    links: [["Journal", "https://www.degruyterbrill.com/document/doi/10.1515/bejte-2018-0108/html"]]
+  }
+];
+
+const BOOK_CHAPTERS = [
+  {
+    title: "Conflict and Inequality: A Survey and Empirical Applications to Finland",
+    coauthors: 'with <a href="https://sites.google.com/view/jaakkomerilainen/main">Jaakko Meriläinen</a> and <a href="https://sites.google.com/site/mattimitrunen/">Matti Mitrunen</a>',
+    journal: "The Routledge Economic History of War",
+    year: "2025", volume: "", pages: "405–424",
+    links: [["Book", "https://www.routledge.com/The-Routledge-Economic-History-of-War/Eloranta-Land-Kuorelahti-Fishback/p/book/9781032230252"]]
+  }
+];
+
+const POLICY = [
+  {
+    title: "Mitä oikeastaan tiedämme maahanmuuttajien kotoutumispolitiikan vaikuttavuudesta?",
+    meta: "with Hanna Pesola and Matti Sarvimäki · <em>Talous &amp; Yhteiskunta</em> 4/2024",
+    link: "https://labore.fi/t&y/mita-oikeastaan-tiedamme-maahanmuuttajien-kotoutumispolitiikan-vaikuttavuudesta/",
+    lang: "fi"
+  },
+  {
+    title: "Koto-SIB -kokeilun vaikutukset ja käytännön toteutus",
+    meta: "with Risto Karinen, Nella Koivula, Tiina Koivula, Olli Oosi, Hanna Pesola and Matti Sarvimäki · <em>Publications of the Ministry of Economic Affairs and Employment</em> 2024:33. English: <em>Impacts and practical implementation of the Koto-SIB experiment</em>",
+    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/165799",
+    lang: "fi"
+  },
+  {
+    title: "Eri syistä maahan muuttaneiden työllistyminen Suomessa",
+    meta: "with Hanna Pesola and Matti Sarvimäki · <em>Publications of the Ministry of Economic Affairs and Employment</em> 2024:9",
+    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/165475",
+    lang: "fi"
+  },
+  {
+    title: "Todistusvalintahankkeen loppuraportti",
+    meta: "with Mila Hakanen, Aino Kalmbach, Tiina Kuuppelomäki, Tina Lauronen and Tuomo Suhonen · <em>VATT Mimeo 70</em>",
+    link: "https://www.doria.fi/handle/10024/187476",
+    lang: "fi"
+  },
+  {
+    title: "Opiskelijavalintauudistuksen seurantatutkimuksen loppuraportti",
+    meta: "with Hannu Karhunen, Tuomas Pekkarinen, Tuomo Suhonen · <em>VATT Mimeo 76</em>",
+    link: "https://www.doria.fi/handle/10024/185280",
+    lang: "fi"
+  },
+  {
+    title: "Tavoitteena syrjimätön työelämä: Työsyrjinnän nykytila ja keinoja tasa-arvon ja yhdenvertaisuuden edistämiseksi",
+    meta: "with Ohto Kanninen, Eero Lilja and Shadia Rask · <em>Publications of the Government's analysis, assessment and research activities</em> 2022:20",
+    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/163880",
+    lang: "fi"
+  },
+  {
+    title: "Rekrytointisyrjintä ja sen vastaiset keinot",
+    meta: "with Ohto Kanninen · <em>Publications of the Government's analysis, assessment and research activities</em> 2021:27",
+    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/163080",
+    lang: "fi"
+  },
+  {
+    title: "Mitä voimme odottaa opiskelijavalinnan uudistukselta",
+    meta: "with Hannu Karhunen, Tuomas Pekkarinen, Tuomo Suhonen · <em>Talous &amp; Yhteiskunta</em> 4/2020",
+    link: "https://labore.fi/t&y/mita-voimme-odottaa-opiskelijavalinnan-uudistukselta/",
+    lang: "fi"
+  }
+];
+
+// ============================================================
+//  STOP EDITING — everything below renders the page
+// ============================================================
+
+function renderPapers(list, containerId) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = list.map(p => {
+    const validLinks = (p.links || []).filter(([, url]) => url && url !== '#');
+    const primaryLink = validLinks.length ? validLinks[0][1] : null;
+    const extraLinks = validLinks.slice(1);
+    const titleHtml = primaryLink
+      ? `<a href="${primaryLink}" class="paper-title-link">${p.title}</a>`
+      : p.title;
+    const linksHtml = extraLinks.length
+      ? `<span class="paper-inline-links">${extraLinks.map(([label, url]) => `[<a href="${url}">${label}</a>]`).join(' ')}</span>`
+      : '';
+    const rows = [];
+    if (p.coauthors) rows.push(`<div class="paper-meta">${p.coauthors}</div>`);
+    if (p.badge || linksHtml) {
+      const parts = [];
+      if (p.badge) parts.push(`<span class="journal">${p.badge}</span>`);
+      if (linksHtml) parts.push(linksHtml);
+      rows.push(`<div class="paper-meta">${parts.join(' ')}</div>`);
+    }
+    return `
+      <div class="paper">
+        <div class="paper-title">${titleHtml}</div>
+        ${rows.join('')}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPublications(list, containerId) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = list.map(p => {
+    const validLinks = (p.links || []).filter(([, url]) => url && url !== '#');
+    const primaryLink = validLinks.length ? validLinks[0][1] : null;
+    const extraLinks = validLinks.slice(1);
+    const titleHtml = primaryLink
+      ? `<a href="${primaryLink}" class="paper-title-link">${p.title}</a>`
+      : p.title;
+    const linksHtml = extraLinks.length
+      ? `<div class="paper-meta"><span class="paper-inline-links">${extraLinks.map(([label, url]) => `[<a href="${url}">${label}</a>]`).join(' ')}</span></div>`
+      : '';
+    return `
+      <div class="paper">
+        <div class="paper-title">${titleHtml}</div>
+        <div class="paper-meta">
+          ${p.coauthors}<br>
+          <span class="journal">${p.journal}</span>, ${p.year}${p.volume ? ', ' + p.volume : ''}${p.pages ? ', ' + p.pages : ''}
+        </div>
+        ${linksHtml}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPolicy(list, containerId) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = list.map(p => {
+    const titleHtml = p.link
+      ? `<a href="${p.link}" class="paper-title-link">${p.title}</a>`
+      : p.title;
+    const langNote = p.lang === 'fi' ? ' <span class="lang-note">in Finnish</span>' : '';
+    return `
+      <div class="policy-item">
+        <div class="policy-title">${titleHtml}</div>
+        <div class="policy-meta">${p.meta}${langNote}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Profile / hero
+  document.getElementById('hero-photo').src = PROFILE.photo;
+  document.getElementById('hero-photo').alt = PROFILE.name;
+  document.getElementById('hero-name').textContent = PROFILE.name;
+  const pos = PROFILE.position;
+  document.getElementById('hero-position').innerHTML = pos.length > 1
+    ? pos.join('<br>')
+    : pos[0];
+  document.getElementById('hero-email').href = 'mailto:' + PROFILE.email;
+  document.getElementById('hero-email').textContent = PROFILE.email;
+  document.getElementById('hero-cv').href = PROFILE.cv;
+
+  // Conditionally render Google Scholar and ORCID buttons
+  const btnContainer = document.getElementById('sidebar-btns');
+  if (PROFILE.scholar) {
+    const a = document.createElement('a');
+    a.href = PROFILE.scholar;
+    a.className = 'sidebar-btn sidebar-btn-icon';
+    a.title = 'Google Scholar';
+    a.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.749-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>`;
+    btnContainer.appendChild(a);
+  }
+  if (PROFILE.orcid) {
+    const a = document.createElement('a');
+    a.href = PROFILE.orcid;
+    a.className = 'sidebar-btn sidebar-btn-icon';
+    a.title = 'ORCID';
+    a.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/></svg>`;
+    btnContainer.appendChild(a);
+  }
+
+  // About
+  document.getElementById('about-text').innerHTML = ABOUT.map(p => `<p>${p}</p>`).join('');
+
+  // News section — hide if empty
+  if (NEWS.length > 0) {
+    document.getElementById('news-section').style.display = '';
+    document.getElementById('news-list').innerHTML = NEWS.map(n =>
+      `<li><span class="news-year">${n.year}</span><span>${n.text}</span></li>`
+    ).join('');
+  }
+
+  // Papers
+  renderPapers(WORKING_PAPERS, 'working-papers-list');
+  renderPapers(WORK_IN_PROGRESS, 'wip-list');
+  renderPublications(PUBLICATIONS, 'publications-list');
+  renderPublications(BOOK_CHAPTERS, 'book-chapters-list');
+  renderPolicy(POLICY, 'policy-list');
+
+  // Header shadow on scroll
+  window.addEventListener('scroll', () => {
+    document.querySelector('header').classList.toggle('scrolled', window.scrollY > 0);
+  }, { passive: true });
+
+  // Active nav link tracks current section
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  sections.forEach(s => sectionObserver.observe(s));
+});
+</script>
+
+<header>
+  <div class="header-inner">
+    <nav>
+      <a href="#working-papers">Working Papers</a>
+      <a href="#publications">Publications</a>
+      <a href="#wip">In Progress</a>
+      <a href="#policy">Policy Work</a>
+      <a href="cv_virkola.pdf" class="nav-cv">CV</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <img id="hero-photo" src="" class="sidebar-photo" alt="">
+    <h1 id="hero-name"></h1>
+    <div class="position" id="hero-position"></div>
+    <div class="sidebar-links">
+      <a id="hero-email" href="" class="email"></a>
+      <div id="sidebar-btns" class="sidebar-btns">
+        <a id="hero-cv" href="" class="sidebar-btn">CV</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <div id="about-text" class="about-intro"></div>
+
+    <!-- News section: hidden by default, shown when NEWS array is non-empty -->
+    <section id="news-section" style="display:none;">
+      <h2>News</h2>
+      <ul id="news-list" class="news-list"></ul>
+    </section>
+
+    <section id="working-papers">
+      <h2>Working Papers</h2>
+      <div id="working-papers-list"></div>
+    </section>
+
+    <section id="publications">
+      <h2>Publications</h2>
+      <div id="publications-list"></div>
+      <div class="section-subheading">Book Chapters</div>
+      <div id="book-chapters-list"></div>
+    </section>
+
+    <section id="wip">
+      <h2>Work in Progress</h2>
+      <div id="wip-list"></div>
+    </section>
+
+    <section id="policy">
+      <h2>Policy Work</h2>
+      <div id="policy-list"></div>
+    </section>
+
+  </main>
+
+</div>
+</body>
+</html>
     a:hover { text-decoration: underline; }
     header { background: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); transition: box-shadow 0.2s; }
     header.scrolled { box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
@@ -497,3 +960,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 </body>
 </html>
+
