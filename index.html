@@ -121,7 +121,7 @@ const PROFILE = {
   // Each string below becomes one line in the position block. HTML is allowed.
   position: [
     'Academy Research Fellow, <strong>VATT Institute for Economic Research</strong>',
-    'Affiliate: <strong>Helsinki GSE · RFBerlin · FIT</strong>',
+    'Affiliate: <a href="https://helsinkigse.fi">Helsinki GSE</a> · <a href="https://rfberlin.com">RFBerlin</a> · <a href="https://verotutkimus.fi/en/home/">FIT</a>',
     'PhD, <strong>European University Institute</strong>, 2021'
   ]
 };
@@ -369,11 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('hero-photo').alt = PROFILE.name;
   document.getElementById('hero-name').textContent = PROFILE.name;
   const pos = PROFILE.position;
-  document.getElementById('hero-position').innerHTML = pos.length > 1
-    ? pos.join('<br>')
-    : pos[0];
-  document.getElementById('hero-email').href = 'mailto:' + PROFILE.email;
-  document.getElementById('hero-email').textContent = PROFILE.email;
+  const emailLine = `<span style="color:var(--muted)">email</span> <a href="mailto:${PROFILE.email}" style="color:var(--text);text-decoration:none;">${PROFILE.email}</a>`;
+  document.getElementById('hero-position').innerHTML = [...pos, emailLine].join('<br>');
   document.getElementById('hero-cv').href = PROFILE.cv;
 
   // Conditionally render Google Scholar and ORCID buttons
@@ -453,9 +450,8 @@ document.addEventListener('DOMContentLoaded', () => {
     <h1 id="hero-name"></h1>
     <div class="position" id="hero-position"></div>
     <div class="sidebar-links">
-      <a id="hero-email" href="" class="email"></a>
       <div id="sidebar-btns" class="sidebar-btns">
-        <a id="hero-cv" href="" class="sidebar-btn">CV</a>
+        <a id="hero-cv" href="" class="sidebar-btn sidebar-btn-icon" title="CV">CV</a>
       </div>
     </div>
   </aside>
