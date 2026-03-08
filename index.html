@@ -4,64 +4,100 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="WGOC2EYRfv5c5-jYyBsFvUXpLWL4a_QfMuWISmrGXgk" />
+  <meta name="description" content="Tuomo Virkola — Economist at VATT Institute for Economic Research. Research on labor economics, immigration, and anti-discrimination policy." />
   <title>Tuomo Virkola</title>
+  <link rel="icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Structured metadata for search engines -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Tuomo Virkola",
+    "jobTitle": "Academy Research Fellow",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "VATT Institute for Economic Research"
+    },
+    "url": "https://tvirkola.github.io",
+    "email": "tuomo.virkola@vatt.fi",
+    "knowsAbout": ["labor economics", "immigration", "anti-discrimination policy", "college admissions"]
+  }
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --green: #4e8a68; --green-dark: #3d6b52; --green-light: #f1f7f3;
-      --green-mid: #cfe3d8; --blue: #1a56a0; --text: #1a1a1a;
+      --blue: #1a56a0; --blue-light: #dce8f5; --text: #1a1a1a;
       --muted: #6b7280; --border: #e5e7eb;
     }
     body { font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.7; color: var(--text); background: #fff; }
     a { color: var(--blue); text-decoration: none; }
     a:hover { text-decoration: underline; }
-    header { background: #fff; position: sticky; top: 0; z-index: 100; }
+    header { background: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); transition: box-shadow 0.2s; }
+    header.scrolled { box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
     .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: center; gap: 32px; height: 52px; }
     .header-name { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); letter-spacing: 0.01em; white-space: nowrap; }
     nav { display: flex; gap: 18px; }
     nav a { font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: 0.02em; text-transform: uppercase; transition: color 0.15s; white-space: nowrap; }
     nav a:hover { color: var(--text); text-decoration: none; }
+    nav a.active { color: var(--text); font-weight: 600; }
+    nav a.nav-cv { color: var(--blue); }
+    nav a.nav-cv:hover { color: var(--text); }
     .layout { max-width: 1100px; margin: 0 auto; display: flex; gap: 32px; padding: 0 40px; align-items: flex-start; }
     .sidebar { width: 260px; flex-shrink: 0; position: sticky; top: 52px; padding: 48px 0 60px; padding-right: 24px; }
     .main-content { flex: 1; min-width: 0; padding-bottom: 80px; }
-    .sidebar-photo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; object-position: center 10%; border: 3px solid var(--green-mid); box-shadow: 0 2px 12px rgba(58,107,71,0.12); display: block; margin-bottom: 20px; }
+    .sidebar-photo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; object-position: center 10%; border: 3px solid var(--blue-light); box-shadow: 0 2px 12px rgba(26,86,160,0.10); display: block; margin-bottom: 20px; }
     .sidebar h1 { font-family: 'EB Garamond', serif; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin-bottom: 16px; line-height: 1.25; }
     .sidebar .position { font-size: 13px; color: var(--text); line-height: 1.65; margin-bottom: 14px; }
     .sidebar .position a { color: var(--blue); font-weight: 600; }
-    .sidebar-about { font-size: 13px; color: #5e7060; line-height: 1.7; margin-bottom: 18px; }
+    .sidebar-about { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 18px; }
     .sidebar-about p + p { margin-top: 8px; }
     .sidebar-links { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
     .sidebar-links .email { font-size: 13px; color: var(--text); font-weight: 400; }
-    .cv-btn { display: inline-block; padding: 4px 12px; background: transparent; color: var(--muted) !important; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; font-weight: 500; letter-spacing: 0.02em; transition: color 0.15s, border-color 0.15s; text-decoration: none !important; }
-    .cv-btn:hover { color: var(--text) !important; border-color: #aaa; }
-    .about-intro { padding-top: 28px; font-size: 15px; line-height: 1.8; color: #333; max-width: 640px; }
+    .sidebar-btn { display: inline-block; padding: 4px 12px; background: transparent; color: var(--muted) !important; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; font-weight: 500; letter-spacing: 0.02em; transition: color 0.15s, border-color 0.15s, background 0.15s; text-decoration: none !important; }
+    .sidebar-btn:hover { color: var(--text) !important; border-color: #aaa; }
+    /* Row of icon-style buttons */
+    .sidebar-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .sidebar-btn-icon { width: 30px; height: 26px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+    .sidebar-btn-icon svg { width: 14px; height: 14px; }
+    .about-intro { padding-top: 28px; font-size: 15px; line-height: 1.8; color: #333; }
+    .section-subheading { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 20px; margin-bottom: 4px; }
+    .lang-note { font-style: normal; font-weight: 400; color: var(--muted); opacity: 0.7; }
     .about-intro p + p { margin-top: 10px; }
-    section { padding-top: 28px; scroll-margin-top: 68px; }
-    section h2 { font-family: 'EB Garamond', serif; font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--border); }
-    .paper { padding: 6px 0; }
+    section { padding-top: 36px; scroll-margin-top: 68px; }
+    section h2 { font-family: 'EB Garamond', serif; font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 14px; padding-left: 10px; border-left: 3px solid var(--blue); }
+    .paper { padding: 10px 0; }
+    .paper:first-child { padding-top: 4px; }
     .paper-title { font-weight: 600; font-size: 14.5px; color: var(--text); line-height: 1.45; }
     .paper-meta { font-size: 13.5px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
     .paper-meta a { color: var(--muted); text-decoration: underline; text-decoration-color: #ccc; text-underline-offset: 2px; }
     .paper-meta a:hover { color: var(--text); text-decoration-color: #888; }
     .paper-meta .journal { font-style: italic; font-weight: 600; color: var(--text); }
-    .paper-title-link { color: inherit; text-decoration: none; }
-    .paper-title-link:hover { color: var(--blue); text-decoration: underline; }
-    .paper-links { margin-top: 5px; font-size: 12.5px; display: flex; gap: 0; flex-wrap: wrap; }
-    .paper-links a { color: var(--muted); font-weight: 500; }
-    .paper-links a:hover { color: var(--blue); }
-    .paper-links a + a::before { content: "·"; margin: 0 7px; color: var(--border); }
+    .paper-title-link { color: var(--text); text-decoration: underline; text-decoration-color: #bbb; text-underline-offset: 2px; }
+    .paper-title-link:hover { color: var(--blue); text-decoration-color: var(--blue); }
+    .paper-inline-links { font-weight: 400; font-size: 13px; color: var(--muted); }
+    .paper-inline-links a { color: var(--muted); text-decoration: none; }
+    .paper-inline-links a:hover { color: var(--blue); text-decoration: underline; }
     .policy-item { padding: 10px 0; }
-    .policy-title { font-size: 14.5px; font-weight: 500; line-height: 1.4; }
-    .policy-meta { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .policy-item:first-child { padding-top: 4px; }
+    .policy-title { font-size: 14.5px; font-weight: 600; line-height: 1.45; }
+    .policy-meta { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+    /* News section */
+    .news-list { list-style: none; padding: 0; }
+    .news-list li { display: flex; gap: 16px; padding: 6px 0; font-size: 13.5px; line-height: 1.5; }
+    .news-list li .news-year { color: var(--muted); font-weight: 500; white-space: nowrap; min-width: 38px; }
     @media (max-width: 700px) {
-      .layout { flex-direction: column; padding: 0 24px; gap: 0; }
-      .sidebar { position: static; width: 100%; padding: 32px 0 28px; border-right: none; border-bottom: 1px solid var(--green-mid); }
-      .sidebar-photo { width: 110px; height: 110px; }
-      .sidebar h1 { font-size: 26px; }
-      .header-inner { padding-left: 24px; padding-right: 24px; }
-      nav { gap: 12px; }
-      nav a { font-size: 10.5px; }
+      .layout { flex-direction: column; padding: 0 20px; gap: 0; }
+      .sidebar { position: static; width: 100%; padding: 28px 0 24px; border-right: none; border-bottom: 1px solid var(--border); }
+      .sidebar-photo { width: 100px; height: 100px; }
+      .sidebar h1 { font-size: 24px; }
+      /* Let the header grow to fit wrapped nav */
+      header { position: sticky; top: 0; }
+      .header-inner { height: auto; padding: 10px 20px; flex-direction: column; gap: 0; }
+      nav { flex-wrap: wrap; justify-content: center; gap: 6px 14px; padding: 4px 0; }
+      nav a { font-size: 11px; }
     }
   </style>
 </head>
@@ -79,6 +115,9 @@ const PROFILE = {
   photo: "VATTstaff151_1.jpeg",
   email: "tuomo.virkola@vatt.fi",
   cv:    "cv_virkola.pdf",
+  // Fill in your Google Scholar and   URLs, or leave blank ("") to hide
+  scholar: "https://scholar.google.com/citations?user=8dAoS2IAAAAJ&hl=en",
+  orcid:   "https://orcid.org/0009-0000-0992-796X",
   // Each string below becomes one line in the position block. HTML is allowed.
   position: [
     'Academy Research Fellow, <strong>VATT Institute for Economic Research</strong>',
@@ -89,7 +128,14 @@ const PROFILE = {
 
 // Each string becomes a paragraph. Add more strings for more paragraphs.
 const ABOUT = [
-  "I'm an applied economist studying labor markets and public policy. My current projects focus immigration policy, anti-discrimination policy, and college admissions.",
+  "I'm an applied economist studying labor markets and public policy. My current projects focus on immigration policy, anti-discrimination policy, and college admissions.",
+];
+
+// News items — most recent first. Leave array empty ([]) to hide the section.
+const NEWS = [
+  // Example entries — edit or remove as needed:
+  // { year: "2026", text: "New working paper posted: College Admissions Criteria, Students' Academic Performance and Social Mobility" },
+  // { year: "2025", text: 'Paper accepted at <em>The Scandinavian Journal of Economics</em>' },
 ];
 
 const WORKING_PAPERS = [
@@ -113,7 +159,7 @@ const WORKING_PAPERS = [
   },
   {
     title: "Equity and Efficiency in Anti-Discrimination Policy: Evidence from an Anonymous Hiring Pilot",
-    coauthors: 'with Ohto Kanninen and <a href="https://www.sannikiviholma.com/">Sanni Kiviholma</a>',
+    coauthors: 'with <a href="https://labore.fi/en/author/ohto-kanninen/">Ohto Kanninen</a> and <a href="https://www.sannikiviholma.com/">Sanni Kiviholma</a>',
     badge: "R&R, Review of Economics and Statistics",
     links: [["SSRN", "https://ssrn.com/abstract=4567818"]]
   },
@@ -175,7 +221,7 @@ const PUBLICATIONS = [
   },
   {
     title: "Pricing, Signalling and Sorting with Frictions",
-    coauthors: 'with <a href="https://sites.google.com/site/matsgodenhielm/home">Mats Godenhielm</a> and <a href="https://www.mv.helsinki.fi/home/kkultti/index.htm">Klaus Kultti</a>',
+    coauthors: 'with <a href="https://sites.google.com/site/matsgodenhielm/home">Mats Godenhielm</a> and Klaus Kultti',
     journal: "The B.E. Journal of Theoretical Economics",
     year: "2019", volume: "20(1)", pages: "1–28",
     links: [["Journal", "https://www.degruyterbrill.com/document/doi/10.1515/bejte-2018-0108/html"]]
@@ -196,42 +242,50 @@ const POLICY = [
   {
     title: "Mitä oikeastaan tiedämme maahanmuuttajien kotoutumispolitiikan vaikuttavuudesta?",
     meta: "with Hanna Pesola and Matti Sarvimäki · <em>Talous &amp; Yhteiskunta</em> 4/2024",
-    link: "https://labore.fi/t&y/mita-oikeastaan-tiedamme-maahanmuuttajien-kotoutumispolitiikan-vaikuttavuudesta/"
+    link: "https://labore.fi/t&y/mita-oikeastaan-tiedamme-maahanmuuttajien-kotoutumispolitiikan-vaikuttavuudesta/",
+    lang: "fi"
   },
   {
     title: "Koto-SIB -kokeilun vaikutukset ja käytännön toteutus",
     meta: "with Risto Karinen, Nella Koivula, Tiina Koivula, Olli Oosi, Hanna Pesola and Matti Sarvimäki · <em>Publications of the Ministry of Economic Affairs and Employment</em> 2024:33. English: <em>Impacts and practical implementation of the Koto-SIB experiment</em>",
-    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/165799"
+    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/165799",
+    lang: "fi"
   },
   {
     title: "Eri syistä maahan muuttaneiden työllistyminen Suomessa",
     meta: "with Hanna Pesola and Matti Sarvimäki · <em>Publications of the Ministry of Economic Affairs and Employment</em> 2024:9",
-    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/165475"
+    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/165475",
+    lang: "fi"
   },
   {
     title: "Todistusvalintahankkeen loppuraportti",
     meta: "with Mila Hakanen, Aino Kalmbach, Tiina Kuuppelomäki, Tina Lauronen and Tuomo Suhonen · <em>VATT Mimeo 70</em>",
-    link: "https://www.doria.fi/handle/10024/187476"
+    link: "https://www.doria.fi/handle/10024/187476",
+    lang: "fi"
   },
   {
     title: "Opiskelijavalintauudistuksen seurantatutkimuksen loppuraportti",
     meta: "with Hannu Karhunen, Tuomas Pekkarinen, Tuomo Suhonen · <em>VATT Mimeo 76</em>",
-    link: "https://www.doria.fi/handle/10024/185280"
+    link: "https://www.doria.fi/handle/10024/185280",
+    lang: "fi"
   },
   {
     title: "Tavoitteena syrjimätön työelämä: Työsyrjinnän nykytila ja keinoja tasa-arvon ja yhdenvertaisuuden edistämiseksi",
-    meta: "with Ohto Kanninen, Eero Lilja and Shadia Rask · <em>Publications of the Government's analysis, assessment and research activities</em> 2022:20",
-    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/163880"
+    meta: 'with <a href="https://labore.fi/en/author/ohto-kanninen/">Ohto Kanninen</a>, Eero Lilja and Shadia Rask · <em>Publications of the Government\'s analysis, assessment and research activities</em> 2022:20',
+    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/163880",
+    lang: "fi"
   },
   {
     title: "Rekrytointisyrjintä ja sen vastaiset keinot",
-    meta: "with Ohto Kanninen · <em>Publications of the Government's analysis, assessment and research activities</em> 2021:27",
-    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/163080"
+    meta: 'with <a href="https://labore.fi/en/author/ohto-kanninen/">Ohto Kanninen</a> · <em>Publications of the Government\'s analysis, assessment and research activities</em> 2021:27',
+    link: "https://julkaisut.valtioneuvosto.fi/handle/10024/163080",
+    lang: "fi"
   },
   {
     title: "Mitä voimme odottaa opiskelijavalinnan uudistukselta",
     meta: "with Hannu Karhunen, Tuomas Pekkarinen, Tuomo Suhonen · <em>Talous &amp; Yhteiskunta</em> 4/2020",
-    link: "https://labore.fi/t&y/mita-voimme-odottaa-opiskelijavalinnan-uudistukselta/"
+    link: "https://labore.fi/t&y/mita-voimme-odottaa-opiskelijavalinnan-uudistukselta/",
+    lang: "fi"
   }
 ];
 
@@ -242,19 +296,27 @@ const POLICY = [
 function renderPapers(list, containerId) {
   const el = document.getElementById(containerId);
   el.innerHTML = list.map(p => {
-    const primaryLink = p.links && p.links.length && p.links[0][1] !== '#' ? p.links[0][1] : null;
-    const extraLinks = primaryLink ? p.links.slice(1) : p.links || [];
+    const validLinks = (p.links || []).filter(([, url]) => url && url !== '#');
+    const primaryLink = validLinks.length ? validLinks[0][1] : null;
+    const extraLinks = validLinks.slice(1);
     const titleHtml = primaryLink
       ? `<a href="${primaryLink}" class="paper-title-link">${p.title}</a>`
       : p.title;
-    const metaParts = [];
-    if (p.coauthors) metaParts.push(p.coauthors);
-    if (p.badge) metaParts.push(`<span class="journal">${p.badge}</span>`);
+    const linksHtml = extraLinks.length
+      ? `<span class="paper-inline-links">${extraLinks.map(([label, url]) => `[<a href="${url}">${label}</a>]`).join(' ')}</span>`
+      : '';
+    const rows = [];
+    if (p.coauthors) rows.push(`<div class="paper-meta">${p.coauthors}</div>`);
+    if (p.badge || linksHtml) {
+      const parts = [];
+      if (p.badge) parts.push(`<span class="journal">${p.badge}</span>`);
+      if (linksHtml) parts.push(linksHtml);
+      rows.push(`<div class="paper-meta">${parts.join(' ')}</div>`);
+    }
     return `
       <div class="paper">
         <div class="paper-title">${titleHtml}</div>
-        ${metaParts.length ? `<div class="paper-meta">${metaParts.join('<br>')}</div>` : ''}
-        ${extraLinks.filter(([,url]) => url !== '#').length ? `<div class="paper-links">${extraLinks.filter(([,url]) => url !== '#').map(([label, url]) => `<a href="${url}">${label}</a>`).join('')}</div>` : ''}
+        ${rows.join('')}
       </div>
     `;
   }).join('');
@@ -263,11 +325,15 @@ function renderPapers(list, containerId) {
 function renderPublications(list, containerId) {
   const el = document.getElementById(containerId);
   el.innerHTML = list.map(p => {
-    const primaryLink = p.links && p.links.length && p.links[0][1] !== '#' ? p.links[0][1] : null;
-    const extraLinks = primaryLink ? p.links.slice(1) : p.links || [];
+    const validLinks = (p.links || []).filter(([, url]) => url && url !== '#');
+    const primaryLink = validLinks.length ? validLinks[0][1] : null;
+    const extraLinks = validLinks.slice(1);
     const titleHtml = primaryLink
       ? `<a href="${primaryLink}" class="paper-title-link">${p.title}</a>`
       : p.title;
+    const linksHtml = extraLinks.length
+      ? `<div class="paper-meta"><span class="paper-inline-links">${extraLinks.map(([label, url]) => `[<a href="${url}">${label}</a>]`).join(' ')}</span></div>`
+      : '';
     return `
       <div class="paper">
         <div class="paper-title">${titleHtml}</div>
@@ -275,7 +341,7 @@ function renderPublications(list, containerId) {
           ${p.coauthors}<br>
           <span class="journal">${p.journal}</span>, ${p.year}${p.volume ? ', ' + p.volume : ''}${p.pages ? ', ' + p.pages : ''}
         </div>
-        ${extraLinks.filter(([,url]) => url !== '#').length ? `<div class="paper-links">${extraLinks.filter(([,url]) => url !== '#').map(([label, url]) => `<a href="${url}">${label}</a>`).join('')}</div>` : ''}
+        ${linksHtml}
       </div>
     `;
   }).join('');
@@ -287,10 +353,11 @@ function renderPolicy(list, containerId) {
     const titleHtml = p.link
       ? `<a href="${p.link}" class="paper-title-link">${p.title}</a>`
       : p.title;
+    const langNote = p.lang === 'fi' ? ' <span class="lang-note">in Finnish</span>' : '';
     return `
       <div class="policy-item">
         <div class="policy-title">${titleHtml}</div>
-        <div class="policy-meta">${p.meta}</div>
+        <div class="policy-meta">${p.meta}${langNote}</div>
       </div>
     `;
   }).join('');
@@ -298,7 +365,7 @@ function renderPolicy(list, containerId) {
 
 document.addEventListener('DOMContentLoaded', () => {
   // Profile / hero
-document.getElementById('hero-photo').src = PROFILE.photo;
+  document.getElementById('hero-photo').src = PROFILE.photo;
   document.getElementById('hero-photo').alt = PROFILE.name;
   document.getElementById('hero-name').textContent = PROFILE.name;
   const pos = PROFILE.position;
@@ -309,8 +376,35 @@ document.getElementById('hero-photo').src = PROFILE.photo;
   document.getElementById('hero-email').textContent = PROFILE.email;
   document.getElementById('hero-cv').href = PROFILE.cv;
 
+  // Conditionally render Google Scholar and ORCID buttons
+  const btnContainer = document.getElementById('sidebar-btns');
+  if (PROFILE.scholar) {
+    const a = document.createElement('a');
+    a.href = PROFILE.scholar;
+    a.className = 'sidebar-btn sidebar-btn-icon';
+    a.title = 'Google Scholar';
+    a.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.749-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>`;
+    btnContainer.appendChild(a);
+  }
+  if (PROFILE.orcid) {
+    const a = document.createElement('a');
+    a.href = PROFILE.orcid;
+    a.className = 'sidebar-btn sidebar-btn-icon';
+    a.title = 'ORCID';
+    a.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/></svg>`;
+    btnContainer.appendChild(a);
+  }
+
   // About
   document.getElementById('about-text').innerHTML = ABOUT.map(p => `<p>${p}</p>`).join('');
+
+  // News section — hide if empty
+  if (NEWS.length > 0) {
+    document.getElementById('news-section').style.display = '';
+    document.getElementById('news-list').innerHTML = NEWS.map(n =>
+      `<li><span class="news-year">${n.year}</span><span>${n.text}</span></li>`
+    ).join('');
+  }
 
   // Papers
   renderPapers(WORKING_PAPERS, 'working-papers-list');
@@ -318,6 +412,25 @@ document.getElementById('hero-photo').src = PROFILE.photo;
   renderPublications(PUBLICATIONS, 'publications-list');
   renderPublications(BOOK_CHAPTERS, 'book-chapters-list');
   renderPolicy(POLICY, 'policy-list');
+
+  // Header shadow on scroll
+  window.addEventListener('scroll', () => {
+    document.querySelector('header').classList.toggle('scrolled', window.scrollY > 0);
+  }, { passive: true });
+
+  // Active nav link tracks current section
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  sections.forEach(s => sectionObserver.observe(s));
 });
 </script>
 
@@ -326,9 +439,9 @@ document.getElementById('hero-photo').src = PROFILE.photo;
     <nav>
       <a href="#working-papers">Working Papers</a>
       <a href="#publications">Publications</a>
-      <a href="#book-chapters">Book Chapters</a>
       <a href="#wip">In Progress</a>
       <a href="#policy">Policy Work</a>
+      <a href="cv_virkola.pdf" class="nav-cv">CV</a>
     </nav>
   </div>
 </header>
@@ -341,13 +454,21 @@ document.getElementById('hero-photo').src = PROFILE.photo;
     <div class="position" id="hero-position"></div>
     <div class="sidebar-links">
       <a id="hero-email" href="" class="email"></a>
-      <a id="hero-cv" href="" class="cv-btn">CV</a>
+      <div id="sidebar-btns" class="sidebar-btns">
+        <a id="hero-cv" href="" class="sidebar-btn">CV</a>
+      </div>
     </div>
   </aside>
 
   <main class="main-content">
 
     <div id="about-text" class="about-intro"></div>
+
+    <!-- News section: hidden by default, shown when NEWS array is non-empty -->
+    <section id="news-section" style="display:none;">
+      <h2>News</h2>
+      <ul id="news-list" class="news-list"></ul>
+    </section>
 
     <section id="working-papers">
       <h2>Working Papers</h2>
@@ -357,15 +478,12 @@ document.getElementById('hero-photo').src = PROFILE.photo;
     <section id="publications">
       <h2>Publications</h2>
       <div id="publications-list"></div>
-    </section>
-
-    <section id="book-chapters">
-      <h2>Book Chapters</h2>
+      <div class="section-subheading">Book Chapters</div>
       <div id="book-chapters-list"></div>
     </section>
 
     <section id="wip">
-      <h2>Selected Work in Progress</h2>
+      <h2>Work in Progress</h2>
       <div id="wip-list"></div>
     </section>
 
@@ -379,4 +497,3 @@ document.getElementById('hero-photo').src = PROFILE.photo;
 </div>
 </body>
 </html>
-
